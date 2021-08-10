@@ -1,0 +1,73 @@
+// // laptops
+
+@media (min-width: 1024px) and (max-width: 1280px) {
+  .login {
+    width: 100%;
+    height: 100%;
+    background-color: #f3ebeb;
+    &__block {
+      font-size: 24px;
+      font-weight: 400;
+      padding: 275px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      &_logos {
+        margin-right: 100px;
+        display: flex;
+        justify-content: center;
+        cursor: pointer;
+        width: 280px;
+        height: 230px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #fafafa;
+        box-shadow: 2px 2px 4px 4px rgba(67, 67, 151, 0.2);
+        border-radius: 37px;
+      }
+    }
+  }
+  .logos {
+    margin-bottom: 17px;
+    width: 110px;
+    height: 110px;
+  }
+}
+
+// pc
+
+@media (min-width: 1280px) {
+  .login {
+    width: 100%;
+    height: 100%;
+    background-color: #f3ebeb;
+    &__block {
+      font-size: 24px;
+      font-weight: 400;
+      padding: 300px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      &_logos {
+        margin-right: 150px;
+        display: flex;
+        justify-content: center;
+        cursor: pointer;
+        width: 300px;
+        height: 250px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #fafafa;
+        box-shadow: 2px 2px 4px 4px rgba(67, 67, 151, 0.2);
+        border-radius: 40px;
+      }
+    }
+  }
+  .logos {
+    margin-bottom: 20px;
+    width: 150px;
+    height: 150px;
+  }
+}

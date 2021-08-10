@@ -1,24 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
+import "./app.scss";
+import Header from "./components/Header/Header";
+import Login from "./components/Login/Login";
+import firebase from "firebase";
+import Map from "./components/Map/Map";
+
+firebase.initializeApp({
+  apiKey: "AIzaSyCEaMwnGACHNiTrYriV3BPH06i2xE8tpQA",
+  authDomain: "weather-dashboard-7f468.firebaseapp.com",
+  projectId: "weather-dashboard-7f468",
+  storageBucket: "weather-dashboard-7f468.appspot.com",
+  messagingSenderId: "31629217478",
+  appId: "1:31629217478:web:ae6763c937bb4747a291c7",
+  measurementId: "G-ZJBQRY2GJB",
+});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Header />
+      <Route exact path="/">
+        <Redirect to="/login"></Redirect>
+      </Route>
+      <Route exact path="/login">
+        <Login />
+      </Route>
+      <Route exact path="/map">
+        <Map />
+      </Route>
     </div>
   );
 }
