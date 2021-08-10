@@ -5,7 +5,7 @@ function Header() {
   //@ts-ignore
   const info = useSelector((loggedIn) => loggedIn.userInfo);
   const dispatch = useDispatch();
-
+  // header
   return (
     <div className="header">
       <h1>Weather-Dashboard App</h1>
