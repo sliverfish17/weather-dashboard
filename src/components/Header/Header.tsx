@@ -1,17 +1,21 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
 import { setLoggedIn, setUserData } from "../../redux/actions/user";
 import "./Header.scss";
 function Header() {
-  //@ts-ignore
-  const info = useSelector((loggedIn) => loggedIn.userInfo);
+  const info = useSelector((loggedIn: RootStateOrAny) => loggedIn.userInfo);
   const dispatch = useDispatch();
-  // header component
+  console.log(info);
+  const handleLogOut = () => {
+    dispatch(setLoggedIn(false));
+    dispatch(setUserData(null));
+  };
+
   return (
     <div className="header">
       <h1>Weather-Dashboard App</h1>
       {
         <div>
-          {info.loggedIn ? (
+          {info.user ? (
             <>
               <div className="info">
                 <img
@@ -20,10 +24,7 @@ function Header() {
                   className="info__picture"
                 />
                 <span className="info__name">{info.user.displayName}</span>
-                <button
-                  className="info__button"
-                  onClick={() => dispatch(setLoggedIn(false))}
-                >
+                <button className="info__button" onClick={handleLogOut}>
                   Log out
                 </button>
               </div>

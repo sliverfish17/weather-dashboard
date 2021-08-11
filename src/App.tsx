@@ -5,6 +5,7 @@ import Header from "./components/Header/Header";
 import Login from "./components/Login/Login";
 import firebase from "firebase";
 import Map from "./components/Map/Map";
+import AppRouter from "./components/AppRouter";
 
 firebase.initializeApp({
   apiKey: "AIzaSyCEaMwnGACHNiTrYriV3BPH06i2xE8tpQA",
@@ -20,15 +21,7 @@ function App() {
   return (
     <div className="app">
       <Header />
-      <Route exact path="/">
-        <Redirect to="/login"></Redirect>
-      </Route>
-      <Route exact path="/login">
-        <Login />
-      </Route>
-      <Route exact path="/map">
-        <Map />
-      </Route>
+      <AppRouter />
     </div>
   );
 }
