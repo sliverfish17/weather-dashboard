@@ -1,6 +1,6 @@
 import "./Login.scss";
 import google from "../../assets/img/google-logo.png";
-import facebook from "../../assets/img/facebook-logo.png";
+import twitter from "../../assets/img/twitter-logo.png";
 import github from "../../assets/img/github-logo.png";
 import firebase from "firebase";
 import { useDispatch } from "react-redux";
@@ -17,6 +17,15 @@ function Login() {
     dispatch(setLoggedIn(true));
   };
 
+  const loginGithub = async () => {
+    const provider = new firebase.auth.GithubAuthProvider();
+    const { user } = await auth.signInWithPopup(provider);
+    console.log(provider);
+
+    dispatch(setUserData(user));
+    dispatch(setLoggedIn(true));
+  };
+
   return (
     <div className="login">
       <div className="login__block">
@@ -25,10 +34,10 @@ function Login() {
           Sign up with Google
         </div>
         <div className="login__block_logos">
-          <img src={facebook} alt="facebook_logo" className="logos" />
-          Sign up with Facebook
+          <img src={twitter} alt="facebook_logo" className="logos" />
+          Sign up with Twitter
         </div>
-        <div className="login__block_logos">
+        <div className="login__block_logos" onClick={loginGithub}>
           <img src={github} alt="github_logo" className="logos" />
           Sign up with Github
         </div>

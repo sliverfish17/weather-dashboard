@@ -4,7 +4,6 @@ import "./Header.scss";
 function Header() {
   const info = useSelector((loggedIn: RootStateOrAny) => loggedIn.userInfo);
   const dispatch = useDispatch();
-  console.log(info);
   const handleLogOut = () => {
     dispatch(setLoggedIn(false));
     dispatch(setUserData(null));

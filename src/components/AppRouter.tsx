@@ -5,7 +5,6 @@ import { RootStateOrAny, useSelector } from "react-redux";
 
 function AppRouter() {
   const info = useSelector((info: RootStateOrAny) => info.userInfo);
-  console.log(info);
 
   return info.user ? (
     <Switch>
