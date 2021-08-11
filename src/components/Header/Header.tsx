@@ -28,7 +28,9 @@ function Header() {
                 </button>
               </div>
             </>
-          ) : null}
+          ) : (
+            ""
+          )}
         </div>
       }
     </div>
