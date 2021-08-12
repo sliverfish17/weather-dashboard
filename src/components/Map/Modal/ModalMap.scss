@@ -1,0 +1,31 @@
+.modal {
+  font-family: "Poppins", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 27px;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: auto;
+  &_content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #fff;
+    height: auto;
+    width: auto;
+    border-radius: 50px;
+  }
+}
+
+.modal.active {
+  opacity: 1;
+  pointer-events: all;
+}

@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import { useDispatch } from "react-redux";
+import { fetchWeather } from "../../redux/actions/currentPlace";
+import ModalMap from "./Modal/ModalMap";
 
 const containerStyle = {
   width: "100%",
@@ -12,12 +15,20 @@ const center = {
 };
 
 function Map() {
+  const [map, setMap] = React.useState(null);
+
+  const [modal, setModalActive] = useState(false);
+
+  const toggleModal = () => {
+    setModalActive((store) => !store);
+  };
+
+  const dispatch = useDispatch();
+
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyDKUOTYFRX-klXSpKZ5ZzLt56AveLg6jGg",
   });
-
-  const [map, setMap] = React.useState(null);
 
   const onLoad = React.useCallback(function callback(map) {
     const bounds = new window.google.maps.LatLngBounds();
@@ -29,16 +40,27 @@ function Map() {
     setMap(null);
   }, []);
 
+  const onClick = (e: any) => {
+    toggleModal();
+    const chosenLat = e.latLng.lat();
+    const chosenLong = e.latLng.lng();
+    dispatch(fetchWeather(chosenLat, chosenLong));
+  };
+
   return isLoaded ? (
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={center}
-      zoom={8}
+      zoom={6}
       onLoad={onLoad}
       onUnmount={onUnmount}
+      onClick={onClick}
     >
-      {}
-      <></>
+      <>
+        {modal && (
+          <ModalMap active={modal} setModalActive={setModalActive}></ModalMap>
+        )}
+      </>
     </GoogleMap>
   ) : (
     <></>

@@ -1,5 +1,3 @@
-import { Dispatch } from "react";
-
 const initialState = {
   user: null,
   loggedIn: false,
