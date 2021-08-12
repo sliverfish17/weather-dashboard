@@ -20,8 +20,13 @@ function Login() {
   const loginGithub = async () => {
     const provider = new firebase.auth.GithubAuthProvider();
     const { user } = await auth.signInWithPopup(provider);
-    console.log(provider);
+    dispatch(setUserData(user));
+    dispatch(setLoggedIn(true));
+  };
 
+  const loginFacebook = async () => {
+    const provider = new firebase.auth.FacebookAuthProvider();
+    const { user } = await auth.signInWithPopup(provider);
     dispatch(setUserData(user));
     dispatch(setLoggedIn(true));
   };
@@ -33,7 +38,7 @@ function Login() {
           <img src={google} alt="google_logo" className="logos" />
           Sign up with Google
         </div>
-        <div className="login__block_logos">
+        <div className="login__block_logos" onClick={loginFacebook}>
           <img src={twitter} alt="facebook_logo" className="logos" />
           Sign up with Twitter
         </div>
