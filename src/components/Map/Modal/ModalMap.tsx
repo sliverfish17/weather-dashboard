@@ -17,44 +17,70 @@ export const ModalMap: React.FC<ModalMapProps> = ({
     state.weatherInfo.cache[state.weatherInfo.cache.length - 1].daily
       .slice(1, 8)
       .map((temp) => {
-        return temp.temp.max;
+        return temp;
       })
   );
-
-  const outsideClick = (e: any) => {
+  const outsideClick = (e) => {
     if (e.target.className === "modal active") {
       setModalActive(false);
     }
   };
 
-  console.log(`ada`, selectedWeather);
-
   const getTime = d3.timeFormat("%H:%M");
-
-  const w = 500;
-  const h = 525;
 
   const myRef = useRef<HTMLDivElement>(null);
 
+  const i = selectedWeather.map((info) => {
+    return info.temp.max;
+  });
+  console.log(selectedWeather);
+
   React.useEffect(() => {
     if (selectedWeather) {
-      const accessToRef = d3
+      const margin = { top: 30, right: 30, bottom: 70, left: 60 },
+        width = 560 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+
+      const svg = d3
         .select(myRef.current)
         .append("svg")
-        .attr("width", w)
-        .attr("height", h);
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
 
-      const rect = accessToRef
-        .selectAll("rect")
+      const x = d3
+        .scaleBand()
+        .range([0, width])
+        .domain(
+          selectedWeather.map((d) =>
+            new Date(d.dt * 1000).toLocaleDateString().slice(0, 10)
+          )
+        )
+        .padding(0.2);
+
+      svg
+        .append("g")
+        .attr("transform", `translate(0, ${height})`)
+        .call(d3.axisBottom(x))
+        .selectAll("text")
+        .attr("transform", "translate(-10,0)rotate(-45)")
+        .style("text-anchor", "end");
+
+      const y = d3.scaleLinear().domain([0, 50]).range([height, 0]);
+      svg.append("g").call(d3.axisLeft(y));
+
+      svg
+        .selectAll("mybar")
         .data(selectedWeather)
-        .enter()
-        .append("rect")
-        .attr("x", (_d, i) => i * 70)
-        .attr("y", (d, _i) => h - 10 * d)
-        .attr("width", 60)
-        .attr("height", (d, _i) => d * 10)
-        .attr("fill", (d, _i) => (d > 30 ? "tomato" : "yellow"));
-      rect.append(`title`).text((data) => `${data} celsius`);
+        .join("rect")
+        .attr("width", x.bandwidth)
+        .attr("height", (d) => height - y(d.temp.max))
+        .attr("x", (d) =>
+          x(new Date(d.dt * 1000).toLocaleDateString().slice(0, 10))
+        )
+        .attr("y", (d) => y(d.temp.max))
+        .attr("fill", "#69b3a2");
     }
   }, []);
 
