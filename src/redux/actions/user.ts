@@ -9,5 +9,5 @@ export const setUserData = (user: object | null) => ({
 });
 
 export const setLogOut = () => ({
-  type: "OUT_USER",
+  type: "SET_LOGGED_OUT",
 });

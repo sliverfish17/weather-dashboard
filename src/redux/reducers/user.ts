@@ -19,9 +19,7 @@ const user = (state = initialState, action: any) => {
     case "SET_LOGGED_OUT":
       return {
         ...state,
-        user: null,
       };
-
     default:
       return state;
   }

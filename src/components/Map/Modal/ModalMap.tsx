@@ -13,8 +13,12 @@ export const ModalMap: React.FC<ModalMapProps> = ({
   active,
   setModalActive,
 }) => {
-  const selectedWeather = useSelector(
-    (state: RootState) => state.currentPoint.weather
+  const selectedWeather = useSelector((state: RootState) =>
+    state.weatherInfo.cache[state.weatherInfo.cache.length - 1].daily
+      .slice(1, 8)
+      .map((temp) => {
+        return temp.temp.max;
+      })
   );
 
   const outsideClick = (e: any) => {
@@ -22,46 +26,45 @@ export const ModalMap: React.FC<ModalMapProps> = ({
       setModalActive(false);
     }
   };
-  console.log(selectedWeather);
 
-  const data = selectedWeather.daily.slice(1, 8).map((temp) => {
-    return temp.temp.max;
-  });
+  console.log(`ada`, selectedWeather);
 
-  console.log(data);
+  const getTime = d3.timeFormat("%H:%M");
 
   const w = 500;
-  const h = 500;
+  const h = 525;
 
   const myRef = useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
-    const accessToRef = d3
-      .select(myRef.current)
-      .append("svg")
-      .attr("width", w)
-      .attr("height", h)
-      .style("background-color", "#FFFFFF");
+    if (selectedWeather) {
+      const accessToRef = d3
+        .select(myRef.current)
+        .append("svg")
+        .attr("width", w)
+        .attr("height", h);
 
-    accessToRef
-      .selectAll("rect")
-      .data(data)
-      .enter()
-      .append("rect")
-      .attr("x", (d, i) => i * 70)
-      .attr("y", (d, i) => h - 10 * d)
-      .attr("width", 60)
-      .attr("height", (d, i) => d * 10)
-      .attr("fill", (d, i) => (d > 35 ? "tomato" : "yellow"));
+      const rect = accessToRef
+        .selectAll("rect")
+        .data(selectedWeather)
+        .enter()
+        .append("rect")
+        .attr("x", (_d, i) => i * 70)
+        .attr("y", (d, _i) => h - 10 * d)
+        .attr("width", 60)
+        .attr("height", (d, _i) => d * 10)
+        .attr("fill", (d, _i) => (d > 30 ? "tomato" : "yellow"));
+      rect.append(`title`).text((data) => `${data} celsius`);
+    }
   }, []);
 
   return (
     <div className={active ? "modal active" : "modal"} onClick={outsideClick}>
       <div className={active ? "modal_content active" : "modal_content"}>
-        {<div ref={myRef}></div>}
+        <div ref={myRef}></div>
       </div>
     </div>
   );
 };
 
-export default ModalMap;
+export default React.memo(ModalMap);

@@ -1,11 +1,18 @@
 import { combineReducers } from "redux";
 import userReducer from "./user";
-import currentPlaceReducer from "./currentPlace";
+import cachePlaceReducer from "./places";
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   userInfo: userReducer,
-  currentPoint: currentPlaceReducer,
+  weatherInfo: cachePlaceReducer,
 });
+
+const rootReducer = (state, action) => {
+  if (action.type === "SET_LOGGED_OUT") {
+    state = undefined;
+  }
+  return appReducer(state, action);
+};
 
 export type RootState = ReturnType<typeof rootReducer>;
 

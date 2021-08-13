@@ -1,23 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import { useDispatch } from "react-redux";
-import { fetchWeather } from "../../redux/actions/currentPlace";
 import ModalMap from "./Modal/ModalMap";
+import { fetchWeather } from "../../redux/actions/places";
 
 const containerStyle = {
   width: "100%",
   height: "100%",
 };
 
-const center = {
-  lat: 50.450001,
-  lng: 30.523333,
-};
-
 function Map() {
   const [map, setMap] = React.useState(null);
 
   const [modal, setModalActive] = useState(false);
+
+  const [location, setLocation] = useState({ lat: 0, lng: 0 });
 
   const toggleModal = () => {
     setModalActive((store) => !store);
@@ -40,12 +37,33 @@ function Map() {
     setMap(null);
   }, []);
 
-  const onClick = (e: any) => {
-    toggleModal();
+  const onClick = (e) => {
     const chosenLat = e.latLng.lat();
     const chosenLong = e.latLng.lng();
     dispatch(fetchWeather(chosenLat, chosenLong));
+    toggleModal();
   };
+
+  const center = location;
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(success, error);
+    } else {
+      alert("geolocation not supported");
+    }
+
+    function success(position) {
+      setLocation({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      });
+    }
+
+    function error(msg) {
+      alert("error: " + msg);
+    }
+  }, [navigator.geolocation]);
 
   return isLoaded ? (
     <GoogleMap

@@ -1,12 +1,12 @@
 import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
-import { setLoggedIn, setUserData } from "../../redux/actions/user";
+import { setLogOut } from "../../redux/actions/user";
 import "./Header.scss";
 function Header() {
-  const info = useSelector((loggedIn: RootStateOrAny) => loggedIn.userInfo);
   const dispatch = useDispatch();
+  const info = useSelector((loggedIn: RootStateOrAny) => loggedIn.userInfo);
+
   const handleLogOut = () => {
-    dispatch(setLoggedIn(false));
-    dispatch(setUserData(null));
+    dispatch(setLogOut());
   };
 
   return (

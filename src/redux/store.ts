@@ -1,5 +1,5 @@
 import { createStore, compose, applyMiddleware } from "redux";
-import rootReducer from "./reducers";
+import appReducer from "./reducers";
 import thunk from "redux-thunk";
 
 declare global {
@@ -33,7 +33,7 @@ const composeEnchancers =
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
-  rootReducer,
+  appReducer,
   oldState,
   composeEnchancers(applyMiddleware(thunk))
 );
