@@ -13,26 +13,19 @@ export const ModalMap: React.FC<ModalMapProps> = ({
   active,
   setModalActive,
 }) => {
-  const selectedWeather = useSelector((state: RootState) =>
-    state.weatherInfo.cache[state.weatherInfo.cache.length - 1].daily
-      .slice(1, 8)
-      .map((temp) => {
-        return temp;
-      })
-  );
+  const current = useSelector((state: RootState) => state.weatherInfo.current);
+  const selectedWeather = current?.daily.slice(1, 8).map((temp) => {
+    return temp;
+  });
+
   const outsideClick = (e) => {
     if (e.target.className === "modal active") {
       setModalActive(false);
     }
   };
 
-  const getTime = d3.timeFormat("%H:%M");
-
   const myRef = useRef<HTMLDivElement>(null);
 
-  const i = selectedWeather.map((info) => {
-    return info.temp.max;
-  });
   console.log(selectedWeather);
 
   React.useEffect(() => {
@@ -67,7 +60,7 @@ export const ModalMap: React.FC<ModalMapProps> = ({
         .attr("transform", "translate(-10,0)rotate(-45)")
         .style("text-anchor", "end");
 
-      const y = d3.scaleLinear().domain([0, 50]).range([height, 0]);
+      const y = d3.scaleLinear().domain([-50, 50]).range([height, 0]);
       svg.append("g").call(d3.axisLeft(y));
 
       svg
@@ -80,17 +73,19 @@ export const ModalMap: React.FC<ModalMapProps> = ({
           x(new Date(d.dt * 1000).toLocaleDateString().slice(0, 10))
         )
         .attr("y", (d) => y(d.temp.max))
-        .attr("fill", "#69b3a2");
+        .attr("fill", "#69b3a2")
+        .append(`title`)
+        .text((d) => `${d.temp.max} celsius`);
     }
-  }, []);
+  }, [current?.daily.length]);
 
   return (
     <div className={active ? "modal active" : "modal"} onClick={outsideClick}>
       <div className={active ? "modal_content active" : "modal_content"}>
-        <div ref={myRef}></div>
+        {selectedWeather && <div ref={myRef}></div>}
       </div>
     </div>
   );
 };
 
-export default React.memo(ModalMap);
+export default ModalMap;

@@ -1,12 +1,19 @@
+export type DailyT = {
+  daily: {
+    dt: number;
+    temp: { max: number };
+  }[];
+};
+
 export type InitT = {
-  current: {};
+  current: DailyT | null;
   cache: {
     daily: { dt: number; temp: { max: number } }[];
   }[];
 };
 
 const initialState: InitT = {
-  current: {},
+  current: null,
   cache: [],
 };
 
