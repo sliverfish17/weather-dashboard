@@ -10,14 +10,13 @@ export const fetchWeather =
   (lat: string, lon: string) => (dispatch: Dispatch<object>) => {
     axios
       .get(
-        `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=af918003566c01882ca4d94c4bf8bbb0&units=metric`
+        `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=f1892e726a46ed26fb925a16d58c408d&units=metric`
       )
       .then(({ data }) => {
         dispatch(setWeather(data));
       });
   };
 
-// export const fetchCachedWeather =
-// (lat: string, lon: string) => (dispatch: Dispatch<object>) => {
-//   dispatch(setWeather(data));
-// };
+export const fetchCachedWeather = (data) => (dispatch: Dispatch<object>) => {
+  dispatch(setWeather(data));
+};

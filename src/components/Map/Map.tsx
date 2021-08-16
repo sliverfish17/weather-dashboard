@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import ModalMap from "./Modal/ModalMap";
-import { fetchWeather } from "../../redux/actions/places";
+import { fetchCachedWeather, fetchWeather } from "../../redux/actions/places";
 
 const containerStyle = {
   width: "100%",
@@ -10,21 +10,40 @@ const containerStyle = {
 };
 
 function Map() {
-  const [map, setMap] = React.useState(null);
+  const [map, setMap] = useState(null);
 
   const [modal, setModalActive] = useState(false);
 
   const [location, setLocation] = useState({ lat: 0, lng: 0 });
 
+  const [current, setCurrent] = useState([] as any);
+
   const data = useSelector((state: RootStateOrAny) => state.weatherInfo.cache);
 
-  const cache = data.map((e) => {
-    return [e.lat, e.lon];
-  });
+  function distance(first, second) {
+    const R = 6371;
+    const rad1 = first.lan * (Math.PI / 180);
+    const rad2 = second.lan * (Math.PI / 180);
+    const latDifference = rad2 - rad1;
+    const lonDifference = (second.lon - first.lon) * (Math.PI / 180);
+    return (
+      2 *
+      R *
+      Math.asin(
+        Math.sqrt(
+          Math.sin(latDifference / 2) * Math.sin(latDifference / 2) +
+            Math.cos(rad1) *
+              Math.cos(rad2) *
+              Math.sin(lonDifference / 2) *
+              Math.sin(lonDifference / 2)
+        )
+      )
+    );
+  }
 
-  console.log(cache);
-
-  function cacheCheck([lat, lon]) {}
+  function toRad(v) {
+    return (v * Math.PI) / 180;
+  }
 
   const toggleModal = () => {
     setModalActive((store) => !store);
@@ -50,9 +69,32 @@ function Map() {
   const onClick = (e) => {
     const chosenLat = e.latLng.lat();
     const chosenLong = e.latLng.lng();
-    cacheCheck([chosenLat, chosenLong]);
-    dispatch(fetchWeather(chosenLat, chosenLong));
-    toggleModal();
+    if (data.length === 0) {
+      dispatch(fetchWeather(chosenLat, chosenLong));
+      toggleModal();
+    } else {
+      for (let i = 0; i < data.length; i++) {
+        const cached = data[i];
+
+        const difference = distance(
+          { lan: cached.lat, lon: cached.lon },
+          { lan: chosenLat, lon: chosenLong }
+        );
+        console.log(difference);
+
+        if (difference <= 100) {
+          fetchCachedWeather(cached[i]);
+          alert("cache");
+
+          toggleModal();
+          break;
+        } else {
+          dispatch(fetchWeather(chosenLat, chosenLong));
+          toggleModal();
+        }
+        break;
+      }
+    }
   };
 
   const center = location;

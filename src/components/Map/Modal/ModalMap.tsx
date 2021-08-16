@@ -79,6 +79,7 @@ export const ModalMap: React.FC<ModalMapProps> = ({
           (d) => `${d.temp.max} celsius
         `
         );
+
       svg
         .append("path")
         .datum(selectedWeather)
@@ -89,16 +90,16 @@ export const ModalMap: React.FC<ModalMapProps> = ({
           "d",
           d3
             .line()
-            .curve(d3.curveCardinal)
             .x(function (d) {
               return xScale(new Date(d.dt * 1000).toLocaleDateString());
             })
             .y(function (d) {
-              return yScale(d.temp.max) + 20;
+              return yScale(d.temp.max) * 1.5;
             })
+            .curve(d3.curveBasis)
         );
     }
-  }, [current?.daily.length]);
+  }, [selectedWeather?.length]);
 
   return (
     <div className={active ? "modal active" : "modal"} onClick={outsideClick}>
