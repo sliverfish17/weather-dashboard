@@ -26,13 +26,11 @@ export const ModalMap: React.FC<ModalMapProps> = ({
 
   const myRef = useRef<HTMLDivElement>(null);
 
-  console.log(selectedWeather);
-
   React.useEffect(() => {
     if (selectedWeather) {
       const margin = { top: 30, right: 30, bottom: 70, left: 60 },
-        width = 560 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+        width = 500 - margin.left - margin.right,
+        height = 460 - margin.top - margin.bottom;
 
       const svg = d3
         .select(myRef.current)
@@ -42,7 +40,7 @@ export const ModalMap: React.FC<ModalMapProps> = ({
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-      const x = d3
+      const xScale = d3
         .scaleBand()
         .range([0, width])
         .domain(
@@ -55,27 +53,49 @@ export const ModalMap: React.FC<ModalMapProps> = ({
       svg
         .append("g")
         .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(x))
+        .call(d3.axisBottom(xScale))
         .selectAll("text")
         .attr("transform", "translate(-10,0)rotate(-45)")
         .style("text-anchor", "end");
 
-      const y = d3.scaleLinear().domain([-50, 50]).range([height, 0]);
-      svg.append("g").call(d3.axisLeft(y));
+      const yScale = d3.scaleLinear().domain([-100, 100]).range([height, 0]);
+
+      svg.append("g").call(d3.axisLeft(yScale));
 
       svg
         .selectAll("mybar")
         .data(selectedWeather)
         .join("rect")
-        .attr("width", x.bandwidth)
-        .attr("height", (d) => height - y(d.temp.max))
+        .attr("width", xScale.bandwidth)
+        .attr("height", (d) => height - yScale(d.temp.max))
         .attr("x", (d) =>
-          x(new Date(d.dt * 1000).toLocaleDateString().slice(0, 10))
+          xScale(new Date(d.dt * 1000).toLocaleDateString().slice(0, 10))
         )
-        .attr("y", (d) => y(d.temp.max))
-        .attr("fill", "#69b3a2")
+        .attr("y", (d) => yScale(d.temp.max))
+        .attr("fill", "#FFA500")
         .append(`title`)
-        .text((d) => `${d.temp.max} celsius`);
+        .text(
+          (d) => `${d.temp.max} celsius
+        `
+        );
+      svg
+        .append("path")
+        .datum(selectedWeather)
+        .attr("fill", "none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", 4)
+        .attr(
+          "d",
+          d3
+            .line()
+            .curve(d3.curveCardinal)
+            .x(function (d) {
+              return xScale(new Date(d.dt * 1000).toLocaleDateString());
+            })
+            .y(function (d) {
+              return yScale(d.temp.max) + 100;
+            })
+        );
     }
   }, [current?.daily.length]);
 

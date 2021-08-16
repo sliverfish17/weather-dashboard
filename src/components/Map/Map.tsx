@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
-import { useDispatch } from "react-redux";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import ModalMap from "./Modal/ModalMap";
 import { fetchWeather } from "../../redux/actions/places";
 
@@ -15,6 +15,16 @@ function Map() {
   const [modal, setModalActive] = useState(false);
 
   const [location, setLocation] = useState({ lat: 0, lng: 0 });
+
+  const data = useSelector((state: RootStateOrAny) => state.weatherInfo.cache);
+
+  const cache = data.map((e) => {
+    return [e.lat, e.lon];
+  });
+
+  console.log(cache);
+
+  function cacheCheck([lat, lon]) {}
 
   const toggleModal = () => {
     setModalActive((store) => !store);
@@ -40,6 +50,7 @@ function Map() {
   const onClick = (e) => {
     const chosenLat = e.latLng.lat();
     const chosenLong = e.latLng.lng();
+    cacheCheck([chosenLat, chosenLong]);
     dispatch(fetchWeather(chosenLat, chosenLong));
     toggleModal();
   };

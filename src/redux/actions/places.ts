@@ -16,3 +16,8 @@ export const fetchWeather =
         dispatch(setWeather(data));
       });
   };
+
+// export const fetchCachedWeather =
+// (lat: string, lon: string) => (dispatch: Dispatch<object>) => {
+//   dispatch(setWeather(data));
+// };
