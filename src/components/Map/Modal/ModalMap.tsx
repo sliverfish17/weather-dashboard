@@ -14,6 +14,7 @@ export const ModalMap: React.FC<ModalMapProps> = ({
   setModalActive,
 }) => {
   const current = useSelector((state: RootState) => state.weatherInfo.current);
+
   const selectedWeather = current?.daily.slice(1, 8).map((temp) => {
     return temp;
   });
@@ -29,8 +30,8 @@ export const ModalMap: React.FC<ModalMapProps> = ({
   React.useEffect(() => {
     if (selectedWeather) {
       const margin = { top: 30, right: 30, bottom: 70, left: 60 },
-        width = 500 - margin.left - margin.right,
-        height = 460 - margin.top - margin.bottom;
+        width = 520 - margin.left - margin.right,
+        height = 480 - margin.top - margin.bottom;
 
       const svg = d3
         .select(myRef.current)
@@ -93,7 +94,7 @@ export const ModalMap: React.FC<ModalMapProps> = ({
               return xScale(new Date(d.dt * 1000).toLocaleDateString());
             })
             .y(function (d) {
-              return yScale(d.temp.max) + 100;
+              return yScale(d.temp.max) + 20;
             })
         );
     }
@@ -102,7 +103,7 @@ export const ModalMap: React.FC<ModalMapProps> = ({
   return (
     <div className={active ? "modal active" : "modal"} onClick={outsideClick}>
       <div className={active ? "modal_content active" : "modal_content"}>
-        {selectedWeather && <div ref={myRef}></div>}
+        <div ref={myRef}></div>
       </div>
     </div>
   );

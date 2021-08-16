@@ -8,17 +8,18 @@
     &__block {
       font-size: 24px;
       font-weight: 400;
-      padding: 275px;
+      padding: 300px;
       display: flex;
       flex-direction: row;
+      justify-content: center;
       align-items: center;
       &_logos {
         margin-right: 100px;
         display: flex;
         justify-content: center;
         cursor: pointer;
-        width: 240px;
-        height: 210px;
+        width: 180px;
+        height: 180px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -29,9 +30,9 @@
     }
   }
   .logos {
-    margin-bottom: 17px;
-    width: 90px;
-    height: 90px;
+    margin-bottom: 20px;
+    width: 135px;
+    height: 135px;
   }
 }
 
@@ -67,12 +68,12 @@
   }
   .logos {
     margin-bottom: 20px;
-    width: 135px;
-    height: 135px;
+    width: 115px;
+    height: 115px;
   }
 }
 
-@media (min-width: 600px) and (max-width: 1280px) {
+@media (min-width: 700px) and (max-width: 1280px) {
   .login {
     width: 100%;
     height: 100%;
@@ -80,16 +81,18 @@
     &__block {
       font-size: 20px;
       font-weight: 400;
-      padding: 125px;
+      padding: 250px;
       display: flex;
       flex-direction: row;
+      align-items: center;
+      justify-content: center;
       &_logos {
-        margin-right: 60px;
+        margin-right: 100px;
         display: flex;
         justify-content: center;
         cursor: pointer;
-        width: 250px;
-        height: 200px;
+        width: 300px;
+        height: 250px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -100,13 +103,13 @@
     }
   }
   .logos {
-    margin-bottom: 15px;
-    width: 60px;
-    height: 60px;
+    margin-bottom: 20px;
+    width: 80px;
+    height: 80px;
   }
 }
 
-@media (min-width: 0px) and (max-width: 750px) {
+@media (min-width: 0px) and (max-width: 700px) {
   .login {
     width: 100%;
     height: 100%;
@@ -116,7 +119,9 @@
       font-weight: 400;
       padding: 100px;
       display: flex;
+      justify-content: center;
       flex-direction: column;
+      align-items: center;
       &_logos {
         margin-bottom: 20px;
         display: flex;
@@ -134,8 +139,8 @@
     }
   }
   .logos {
-    margin-bottom: 15px;
-    width: 60px;
-    height: 60px;
+    margin-bottom: 20px;
+    width: 100px;
+    height: 100px;
   }
 }
