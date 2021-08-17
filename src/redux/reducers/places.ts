@@ -6,14 +6,14 @@ export type DailyT = {
 };
 
 export type InitT = {
-  current: DailyT | null;
   cache: {
     daily: { dt: number; temp: { max: number } }[];
+    lat: number;
+    lon: number;
   }[];
 };
 
 const initialState: InitT = {
-  current: null,
   cache: [],
 };
 
@@ -22,7 +22,6 @@ const cachePlaceReducer = (state = initialState, action: any): InitT => {
     case "SET_WEATHER":
       return {
         ...state,
-        current: action.payload,
         cache: [...state.cache, action.payload],
       };
     default:

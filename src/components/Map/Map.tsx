@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import ModalMap from "./Modal/ModalMap";
-import { fetchCachedWeather, fetchWeather } from "../../redux/actions/places";
+import { fetchNewWeather } from "../../redux/actions/places";
 
 const containerStyle = {
   width: "100%",
@@ -16,7 +16,7 @@ function Map() {
 
   const [location, setLocation] = useState({ lat: 0, lng: 0 });
 
-  const [current, setCurrent] = useState([] as any);
+  const [current, setCurrent] = useState(null);
 
   const data = useSelector((state: RootStateOrAny) => state.weatherInfo.cache);
 
@@ -41,12 +41,16 @@ function Map() {
     );
   }
 
-  function toRad(v) {
-    return (v * Math.PI) / 180;
-  }
-
   const toggleModal = () => {
     setModalActive((store) => !store);
+  };
+
+  const outsideClick = (e) => {
+    if (e.target.className === "modal active") {
+      setModalActive(false);
+      setCurrent(null);
+      console.log("close", current);
+    }
   };
 
   const dispatch = useDispatch();
@@ -66,36 +70,33 @@ function Map() {
     setMap(null);
   }, []);
 
-  const onClick = (e) => {
-    const chosenLat = e.latLng.lat();
-    const chosenLong = e.latLng.lng();
-    if (data.length === 0) {
-      dispatch(fetchWeather(chosenLat, chosenLong));
+  const onClick = async (e) => {
+    if (e.latLng && data) {
       toggleModal();
-    } else {
-      for (let i = 0; i < data.length; i++) {
-        const cached = data[i];
+      const chosenLat: number = e.latLng.lat();
+      const chosenLong: number = e.latLng.lng();
+      if (data.length === 0) {
+        dispatch(fetchNewWeather(chosenLat, chosenLong));
+      } else {
+        for (let i = 0; i < data.length; i++) {
+          const cached = data[i];
+          const difference = distance(
+            { lan: cached.lat, lon: cached.lon },
+            { lan: chosenLat, lon: chosenLong }
+          );
+          if (difference <= 30) {
+            await setCurrent(cached.daily);
 
-        const difference = distance(
-          { lan: cached.lat, lon: cached.lon },
-          { lan: chosenLat, lon: chosenLong }
-        );
-        console.log(difference);
-
-        if (difference <= 100) {
-          fetchCachedWeather(cached[i]);
-          alert("cache");
-
-          toggleModal();
-          break;
-        } else {
-          dispatch(fetchWeather(chosenLat, chosenLong));
-          toggleModal();
+            break;
+          } else if (difference > 30 && i === data.length - 1) {
+            dispatch(fetchNewWeather(chosenLat, chosenLong));
+            break;
+          }
         }
-        break;
       }
     }
   };
+  console.log("CURRENT: ", current);
 
   const center = location;
 
@@ -116,20 +117,27 @@ function Map() {
     function error(msg) {
       alert("error: " + msg);
     }
-  }, [navigator.geolocation]);
+  }, [data]);
+
+  const passNewData = data ? data[data.length - 1]?.daily : null;
+  const passData = current ? current : passNewData;
 
   return isLoaded ? (
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={center}
-      zoom={6}
+      zoom={8}
       onLoad={onLoad}
       onUnmount={onUnmount}
       onClick={onClick}
     >
       <>
         {modal && (
-          <ModalMap active={modal} setModalActive={setModalActive}></ModalMap>
+          <ModalMap
+            data={passData}
+            active={modal}
+            outsideClick={outsideClick}
+          ></ModalMap>
         )}
       </>
     </GoogleMap>
