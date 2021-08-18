@@ -49,7 +49,6 @@ function Map() {
     if (e.target.className === "modal active") {
       setModalActive(false);
       setCurrent(null);
-      console.log("close", current);
     }
   };
 
@@ -70,7 +69,7 @@ function Map() {
     setMap(null);
   }, []);
 
-  const onClick = async (e) => {
+  const onClick = (e) => {
     if (e.latLng && data) {
       toggleModal();
       const chosenLat: number = e.latLng.lat();
@@ -85,18 +84,17 @@ function Map() {
             { lan: chosenLat, lon: chosenLong }
           );
           if (difference <= 30) {
-            await setCurrent(cached.daily);
-
+            setCurrent(cached.daily);
             break;
           } else if (difference > 30 && i === data.length - 1) {
             dispatch(fetchNewWeather(chosenLat, chosenLong));
+            setCurrent(data[i].daily);
             break;
           }
         }
       }
     }
   };
-  console.log("CURRENT: ", current);
 
   const center = location;
 
@@ -117,10 +115,13 @@ function Map() {
     function error(msg) {
       alert("error: " + msg);
     }
-  }, [data]);
+  }, []);
 
-  const passNewData = data ? data[data.length - 1]?.daily : null;
-  const passData = current ? current : passNewData;
+  useEffect(() => {
+    if (data.length === 1) {
+      setCurrent(data[0].daily);
+    }
+  }, [data]);
 
   return isLoaded ? (
     <GoogleMap
@@ -134,7 +135,7 @@ function Map() {
       <>
         {modal && (
           <ModalMap
-            data={passData}
+            data={current}
             active={modal}
             outsideClick={outsideClick}
           ></ModalMap>

@@ -5,7 +5,7 @@ import "./ModalMap.scss";
 import { TTemp } from "../../utils/types";
 interface ModalMapProps {
   active: boolean;
-  data: TTemp | [];
+  data: TTemp | null;
   outsideClick: React.MouseEventHandler<HTMLDivElement>;
 }
 
@@ -16,15 +16,11 @@ export const ModalMap: React.FC<ModalMapProps> = ({
 }) => {
   const myRef = useRef<HTMLDivElement>(null);
 
-  console.log("PASSED DATA", data);
-
   useEffect(() => {
-    console.log("render");
-
     if (data) {
       const margin = { top: 30, right: 30, bottom: 70, left: 60 },
-        width = 520 - margin.left - margin.right,
-        height = 480 - margin.top - margin.bottom;
+        width = 540 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
 
       const svg = d3
         .select(myRef.current)
@@ -83,13 +79,13 @@ export const ModalMap: React.FC<ModalMapProps> = ({
           "d",
           d3
             .line()
+            .curve(d3.curveBasis)
             .x(function (d) {
-              return xScale(new Date(d.dt * 1000).toLocaleDateString());
+              return xScale(new Date(d.dt * 1000).toLocaleDateString()) * 1.11;
             })
             .y(function (d) {
               return yScale(d.temp.max) * 1.5;
             })
-            .curve(d3.curveBasis)
         );
     }
   }, [data]);
@@ -97,7 +93,7 @@ export const ModalMap: React.FC<ModalMapProps> = ({
   return (
     <div className={active ? "modal active" : "modal"} onClick={outsideClick}>
       <div className={active ? "modal_content active" : "modal_content"}>
-        {data ? <div ref={myRef}></div> : null}
+        <div ref={myRef}></div>
       </div>
     </div>
   );
