@@ -1,22 +1,25 @@
-const initialState = {
+import { UserAction, UserActionTypes, UserState } from "../../types/user";
+
+const initialState: UserState = {
   user: null,
   loggedIn: false,
 };
 
-const user = (state = initialState, action) => {
+const user = (state = initialState, action: UserAction): UserState => {
   switch (action.type) {
-    case "SET_USER":
+    case UserActionTypes.SET_USER:
       return {
         ...state,
         user: action.payload,
       };
 
-    case "SET_LOGGED_IN":
+    case UserActionTypes.SET_USER_LOGGED_IN:
       return {
-        ...state,
+        user: { ...state },
         loggedIn: action.payload,
       };
-    case "SET_LOGGED_OUT":
+
+    case UserActionTypes.SET_USER_LOGGED_OUT:
       return {
         ...state,
       };

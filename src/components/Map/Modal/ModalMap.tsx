@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
-import { TTemp } from "../../utils/types";
+import { TTemp } from "../../../types/weather";
 import "./ModalMap.scss";
 
 interface ModalMapProps {

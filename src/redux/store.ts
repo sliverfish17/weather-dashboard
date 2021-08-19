@@ -8,7 +8,7 @@ declare global {
   }
 }
 
-const saveState = (state: any) => {
+const saveState = (state) => {
   try {
     const serialisedState = JSON.stringify(state);
 

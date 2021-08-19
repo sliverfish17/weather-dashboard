@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import { useDispatch, useSelector } from "react-redux";
-import ModalMap from "./Modal/ModalMap";
+import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import { fetchNewWeather } from "../../redux/actions/places";
-import { TState, TTemp } from "../utils/types";
+import { TState, TTemp } from "../../types/weather";
+import ModalMap from "./Modal/ModalMap";
 
 const containerStyle = {
   width: "100%",
@@ -62,7 +62,7 @@ function Map() {
     setModalActive((store) => !store);
   };
 
-  const outsideClick = (e: any) => {
+  const outsideClick = (e) => {
     if (e.target.className === "modal active") {
       setModalActive(false);
       setCurrent(null);
@@ -84,7 +84,7 @@ function Map() {
     setMap(null);
   }, []);
 
-  const onClick = (e: any) => {
+  const onClick = (e) => {
     if (e.latLng && data) {
       toggleModal();
       const chosenLat: number = e.latLng.lat();

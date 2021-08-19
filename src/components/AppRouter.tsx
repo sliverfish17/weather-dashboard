@@ -2,7 +2,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import { privateRoutes, publicRoutes } from "../routes";
 import { LOGIN_ROUTE, MAP_ROUTE } from "./utils/consts";
 import { useSelector } from "react-redux";
-import { TUser } from "./utils/types";
+import { TUser } from "../types/weather";
 
 function AppRouter() {
   const info = useSelector((info: TUser): any => info.userInfo);
