@@ -8,6 +8,7 @@ import { setLoggedIn, setUserData } from "../../redux/actions/user";
 
 function Login() {
   const dispatch = useDispatch();
+
   const auth = firebase.auth();
 
   const loginGoogle = async () => {
@@ -35,15 +36,27 @@ function Login() {
     <div className="login">
       <div className="login__block">
         <div className="login__block_logos" onClick={loginGoogle}>
-          <img src={google} alt="google_logo" className="logos" />
+          <img
+            src={google}
+            alt="google_logo"
+            className="login__block_logos_img"
+          />
           Sign up with Google
         </div>
         <div className="login__block_logos" onClick={loginFacebook}>
-          <img src={facebook} alt="facebook_logo" className="logos" />
+          <img
+            src={facebook}
+            alt="facebook_logo"
+            className="login__block_logos_img"
+          />
           Sign up with Facebook
         </div>
         <div className="login__block_logos" onClick={loginGithub}>
-          <img src={github} alt="github_logo" className="logos" />
+          <img
+            src={github}
+            alt="github_logo"
+            className="login__block_logos_img"
+          />
           Sign up with Github
         </div>
       </div>

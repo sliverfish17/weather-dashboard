@@ -18,8 +18,8 @@ export const ModalMap: React.FC<ModalMapProps> = ({
 
   useEffect(() => {
     if (data) {
-      let innerW = window.innerWidth / 2;
-      let innerH = window.innerHeight / 3.5;
+      let innerW = window.innerWidth / 1.5;
+      let innerH = window.innerHeight / 3;
       if (window.innerWidth === 1920 && window.innerHeight > 960) {
         innerW = 540;
         innerH = 500;

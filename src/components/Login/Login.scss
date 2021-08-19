@@ -26,13 +26,13 @@
         background-color: #fafafa;
         box-shadow: 2px 2px 4px 4px rgba(67, 67, 151, 0.2);
         border-radius: 37px;
+        &_img {
+          margin-bottom: 20px;
+          width: 135px;
+          height: 135px;
+        }
       }
     }
-  }
-  .logos {
-    margin-bottom: 20px;
-    width: 135px;
-    height: 135px;
   }
 }
 
@@ -63,13 +63,13 @@
         background-color: #fafafa;
         box-shadow: 2px 2px 4px 4px rgba(67, 67, 151, 0.2);
         border-radius: 40px;
+        &_img {
+          margin-bottom: 20px;
+          width: 115px;
+          height: 115px;
+        }
       }
     }
-  }
-  .logos {
-    margin-bottom: 20px;
-    width: 115px;
-    height: 115px;
   }
 }
 
@@ -83,6 +83,8 @@
       font-weight: 400;
       padding: 250px;
       display: flex;
+      width: auto;
+      height: auto;
       flex-direction: row;
       align-items: center;
       justify-content: center;
@@ -98,13 +100,13 @@
         background-color: #fafafa;
         box-shadow: 2px 2px 4px 4px rgba(67, 67, 151, 0.2);
         border-radius: 40px;
+        &_img {
+          margin-bottom: 20px;
+          width: 100px;
+          height: 100px;
+        }
       }
     }
-  }
-  .logos {
-    margin-bottom: 20px;
-    width: 100px;
-    height: 100px;
   }
 }
 
@@ -116,7 +118,7 @@
     &__block {
       font-size: 16px;
       font-weight: 400;
-      padding: 20px;
+      padding: 75px;
       display: flex;
       justify-content: center;
       flex-direction: column;
@@ -126,8 +128,8 @@
         display: flex;
         justify-content: center;
         cursor: pointer;
-        width: 175px;
-        height: 125px;
+        width: 180px;
+        height: 130px;
 
         display: flex;
         flex-direction: column;
@@ -135,12 +137,12 @@
         background-color: #fafafa;
         box-shadow: 2px 2px 4px 4px rgba(67, 67, 151, 0.2);
         border-radius: 40px;
+        &_img {
+          margin-bottom: 10px;
+          width: 70px;
+          height: 70px;
+        }
       }
     }
-  }
-  .logos {
-    margin-bottom: 10px;
-    width: 70px;
-    height: 70px;
   }
 }

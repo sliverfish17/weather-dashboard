@@ -2,8 +2,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { setLogOut } from "../../redux/actions/user";
 import { RootState } from "../../redux/reducers";
 import "./Header.scss";
+
 function Header() {
   const dispatch = useDispatch();
+
   const info = useSelector((loggedIn: RootState) => loggedIn.userInfo);
 
   const handleLogOut = () => {
