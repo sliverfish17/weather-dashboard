@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
-import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ModalMap from "./Modal/ModalMap";
 import { fetchNewWeather } from "../../redux/actions/places";
+import { TState, TTemp } from "../utils/types";
 
 const containerStyle = {
   width: "100%",
@@ -16,9 +17,25 @@ function Map() {
 
   const [location, setLocation] = useState({ lat: 0, lng: 0 });
 
-  const [current, setCurrent] = useState(null);
+  const [current, setCurrent] = useState<TTemp | null>(null);
 
-  const data = useSelector((state: RootStateOrAny) => state.weatherInfo.cache);
+  const data = useSelector((state: TState): any => state.weatherInfo.cache);
+
+  const dispatch = useDispatch();
+
+  const center = location;
+
+  const hours = 1;
+  const now = new Date().getTime();
+  const setupTime = localStorage.getItem("setupTime");
+  if (setupTime == null) {
+    localStorage.setItem("setupTime", now.toString());
+  } else {
+    if (+now - +setupTime > hours * 60 * 60 * 1000) {
+      localStorage.clear();
+      localStorage.setItem("setupTime", now.toString());
+    }
+  }
 
   function distance(first, second) {
     const R = 6371;
@@ -45,14 +62,12 @@ function Map() {
     setModalActive((store) => !store);
   };
 
-  const outsideClick = (e) => {
+  const outsideClick = (e: any) => {
     if (e.target.className === "modal active") {
       setModalActive(false);
       setCurrent(null);
     }
   };
-
-  const dispatch = useDispatch();
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -69,7 +84,7 @@ function Map() {
     setMap(null);
   }, []);
 
-  const onClick = (e) => {
+  const onClick = (e: any) => {
     if (e.latLng && data) {
       toggleModal();
       const chosenLat: number = e.latLng.lat();
@@ -95,8 +110,6 @@ function Map() {
       }
     }
   };
-
-  const center = location;
 
   useEffect(() => {
     if (navigator.geolocation) {

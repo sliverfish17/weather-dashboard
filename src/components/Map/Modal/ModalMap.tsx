@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
-
-import "./ModalMap.scss";
 import { TTemp } from "../../utils/types";
+import "./ModalMap.scss";
+
 interface ModalMapProps {
   active: boolean;
   data: TTemp | null;
@@ -18,9 +18,19 @@ export const ModalMap: React.FC<ModalMapProps> = ({
 
   useEffect(() => {
     if (data) {
+      let innerW = window.innerWidth / 2;
+      let innerH = window.innerHeight / 3.5;
+      if (window.innerWidth === 1920 && window.innerHeight > 960) {
+        innerW = 540;
+        innerH = 500;
+      } else if (window.innerWidth > 1920 && window.innerHeight > 1000) {
+        innerW = window.innerWidth / 2.5;
+        innerH = window.innerWidth / 3;
+      }
+
       const margin = { top: 30, right: 30, bottom: 70, left: 60 },
-        width = 540 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+        width = innerW - margin.left - margin.right,
+        height = innerH - margin.top - margin.bottom;
 
       const svg = d3
         .select(myRef.current)
@@ -75,6 +85,7 @@ export const ModalMap: React.FC<ModalMapProps> = ({
         .attr("fill", "none")
         .attr("stroke", "steelblue")
         .attr("stroke-width", 4)
+
         .attr(
           "d",
           d3
@@ -84,7 +95,7 @@ export const ModalMap: React.FC<ModalMapProps> = ({
               return xScale(new Date(d.dt * 1000).toLocaleDateString()) * 1.11;
             })
             .y(function (d) {
-              return yScale(d.temp.max) * 1.5;
+              return yScale(d.temp.max) * 1.2;
             })
         );
     }

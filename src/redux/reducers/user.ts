@@ -3,7 +3,7 @@ const initialState = {
   loggedIn: false,
 };
 
-const user = (state = initialState, action: any) => {
+const user = (state = initialState, action) => {
   switch (action.type) {
     case "SET_USER":
       return {

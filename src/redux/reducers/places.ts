@@ -17,7 +17,7 @@ const initialState: InitT = {
   cache: [],
 };
 
-const cachePlaceReducer = (state = initialState, action: any): InitT => {
+const cachePlaceReducer = (state = initialState, action): InitT => {
   switch (action.type) {
     case "SET_WEATHER":
       return {

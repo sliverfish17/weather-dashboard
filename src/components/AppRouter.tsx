@@ -1,10 +1,11 @@
 import { Route, Switch, Redirect } from "react-router-dom";
 import { privateRoutes, publicRoutes } from "../routes";
 import { LOGIN_ROUTE, MAP_ROUTE } from "./utils/consts";
-import { RootStateOrAny, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { TUser } from "./utils/types";
 
 function AppRouter() {
-  const info = useSelector((info: RootStateOrAny) => info.userInfo);
+  const info = useSelector((info: TUser): any => info.userInfo);
 
   return info.user ? (
     <Switch>
